@@ -2,8 +2,7 @@
 
 A professional, high-performance desktop application built for businesses to streamline their daily operations, order management, and financial reporting.
 
-![Uploading image.png…]()
-
+<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/062d8804-d5ee-4a52-aae2-518f7e23676a" />
 
 ## 🌟 Key Features
 
