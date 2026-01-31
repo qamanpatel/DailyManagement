@@ -37,6 +37,9 @@
         <DataTemplate DataType="{x:Type viewmodels:ReportViewModel}">
             <views:ReportView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ClientReportViewModel}">
+            <views:ClientReportView/>
+        </DataTemplate>
     </Window.DataTemplates>
 
     <Grid>

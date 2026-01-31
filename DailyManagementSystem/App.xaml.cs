@@ -58,6 +58,7 @@ namespace DailyManagementSystem
             services.AddTransient<PaymentViewModel>();
             services.AddTransient<ExpenseViewModel>();
             services.AddTransient<ReportViewModel>();
+            services.AddTransient<ClientReportViewModel>();
             
             services.AddSingleton<Func<Type, BaseViewModel>>(serviceProvider => viewModelType => 
                 (BaseViewModel)serviceProvider.GetRequiredService(viewModelType));

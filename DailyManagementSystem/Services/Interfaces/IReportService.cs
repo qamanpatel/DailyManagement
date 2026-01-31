@@ -13,5 +13,6 @@ namespace DailyManagementSystem.Services.Interfaces
         Task<IEnumerable<ExpenseReportDto>> GetMonthlyExpenseReportsAsync(int? startYear, int? startMonth, int? endYear = null, int? endMonth = null);
         Task<IEnumerable<CategoryExpenseDto>> GetMonthlyCategoryExpenseSummaryAsync(int? startYear, int? startMonth, int? endYear = null, int? endMonth = null);
         Task<IEnumerable<PersonExpenseDto>> GetMonthlyPersonExpenseSummaryAsync(int? startYear, int? startMonth, int? endYear = null, int? endMonth = null);
+        Task<ClientSpecificReportDto> GetClientSpecificReportAsync(int clientId, int? startYear, int? startMonth, int? endYear = null, int? endMonth = null);
     }
 }

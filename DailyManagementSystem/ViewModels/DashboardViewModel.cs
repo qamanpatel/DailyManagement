@@ -94,6 +94,7 @@ namespace DailyManagementSystem.ViewModels
         public ICommand AddPaymentCommand { get; }
         public ICommand AddExpenseCommand { get; }
         public ICommand GenerateReportCommand { get; }
+        public ICommand OpenClientReportCommand { get; }
         public ICommand LogoutCommand { get; }
 
         public DashboardViewModel(
@@ -133,6 +134,7 @@ namespace DailyManagementSystem.ViewModels
             AddPaymentCommand = new RelayCommand(_ => _navigationService.NavigateTo<PaymentViewModel>());
             AddExpenseCommand = new RelayCommand(_ => _navigationService.NavigateTo<ExpenseViewModel>());
             GenerateReportCommand = new RelayCommand(_ => _navigationService.NavigateTo<ReportViewModel>());
+            OpenClientReportCommand = new RelayCommand(_ => _navigationService.NavigateTo<ClientReportViewModel>());
             LogoutCommand = new RelayCommand(_ => Logout());
 
             _ = LoadDashboardDataAsync();

@@ -1,0 +1,120 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:DailyManagementSystem.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="DailyManagementSystem.Views.ClientReportView"
+             x:DataType="vm:ClientReportViewModel">
+
+    <Grid RowDefinitions="Auto,Auto,*" Margin="20">
+        
+        <!-- Header -->
+        <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,0,0,20">
+            <Button Command="{Binding GoBackCommand}" Content="← Back" Classes="outline"/>
+            <TextBlock Text="Client Specific Report" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Filters -->
+        <Border Grid.Row="1" Background="#1E1E1E" Padding="15" CornerRadius="8" Margin="0,0,0,20">
+            <StackPanel Orientation="Horizontal" Spacing="25">
+                <StackPanel>
+                    <TextBlock Text="Select Client" Foreground="#B0BEC5" Margin="0,0,0,5"/>
+                    <ComboBox ItemsSource="{Binding Clients}" 
+                              SelectedItem="{Binding SelectedClient}"
+                              PlaceholderText="Choose a Client"
+                              Width="200">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ClientName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                 <!-- From Section -->
+                <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Bottom">
+                    <TextBlock Text="From:" VerticalAlignment="Center" Foreground="#B0BEC5"/>
+                    <ComboBox ItemsSource="{Binding Months}" SelectedItem="{Binding FromMonth}" Width="80" PlaceholderText="All"/>
+                    <ComboBox ItemsSource="{Binding Years}" SelectedItem="{Binding FromYear}" Width="100" PlaceholderText="All"/>
+                </StackPanel>
+                
+                <!-- To Section -->
+                <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Bottom">
+                    <TextBlock Text="To:" VerticalAlignment="Center" Foreground="#B0BEC5"/>
+                    <ComboBox ItemsSource="{Binding Months}" SelectedItem="{Binding ToMonth}" Width="80" PlaceholderText="All"/>
+                    <ComboBox ItemsSource="{Binding Years}" SelectedItem="{Binding ToYear}" Width="100" PlaceholderText="All"/>
+                </StackPanel>
+
+                <Button Command="{Binding GenerateReportCommand}" 
+                        Content="Generate Report" 
+                        Classes="accent" 
+                        VerticalAlignment="Bottom"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Report Data -->
+        <ScrollViewer Grid.Row="2">
+            <StackPanel Spacing="20" IsVisible="{Binding ReportData, Converter={x:Static ObjectConverters.IsNotNull}}">
+                
+                <TextBlock Text="{Binding ReportData.ClientName, StringFormat='Report for: {0}'}" 
+                           FontSize="20" FontWeight="SemiBold" Foreground="#90CAF9"/>
+
+                <WrapPanel ItemWidth="220" ItemHeight="120">
+                    <!-- Total Orders -->
+                    <Border CornerRadius="8" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" Margin="0,0,15,15" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="Total Orders" Foreground="#90CAF9" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ReportData.TotalOrders}" FontSize="28" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    
+                     <!-- Delivered Orders -->
+                    <Border CornerRadius="8" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" Margin="0,0,15,15" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="Delivered Orders" Foreground="#A5D6A7" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ReportData.DeliveredOrders}" FontSize="28" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                     <!-- Pending Orders -->
+                    <Border CornerRadius="8" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" Margin="0,0,15,15" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="Pending Orders" Foreground="#FFCC80" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ReportData.PendingOrders}" FontSize="28" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Total Amount -->
+                    <Border CornerRadius="8" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" Margin="0,0,15,15" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="Total Order Amount" Foreground="#CE93D8" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ReportData.TotalOrderAmount, StringFormat={}{0:C}}" FontSize="28" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Paid Amount -->
+                    <Border CornerRadius="8" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" Margin="0,0,15,15" Padding="15">
+                         <StackPanel>
+                            <TextBlock Text="Paid Amount" Foreground="#80DEEA" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ReportData.TotalPaidAmount, StringFormat={}{0:C}}" FontSize="28" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Pending Amount -->
+                    <Border CornerRadius="8" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" Margin="0,0,15,15" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="Pending Amount" Foreground="#EF9A9A" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ReportData.TotalPendingAmount, StringFormat={}{0:C}}" FontSize="28" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <TextBlock Grid.Row="2" Text="Select a client and click Generate Report." 
+                   IsVisible="{Binding ReportData, Converter={x:Static ObjectConverters.IsNull}}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#757575"/>
+                   
+    </Grid>
+</UserControl>

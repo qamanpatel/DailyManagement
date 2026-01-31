@@ -93,6 +93,9 @@
                     <Button Command="{Binding GenerateReportCommand}" 
                             Content="Generate Report" 
                             Classes="accent" Margin="0,0,10,10" Padding="15,10"/>
+                    <Button Command="{Binding OpenClientReportCommand}" 
+                            Content="Client Report" 
+                            Classes="accent" Margin="0,0,10,10" Padding="15,10"/>
                 </WrapPanel>
             </StackPanel>
         </Border>

@@ -228,5 +228,40 @@ namespace DailyManagementSystem.Services.Implementations
                 .OrderByDescending(p => p.TotalAmount)
                 .ToList();
         }
+
+        public async Task<ClientSpecificReportDto> GetClientSpecificReportAsync(int clientId, int? startYear, int? startMonth, int? endYear = null, int? endMonth = null)
+        {
+            var range = GetDateRange(startYear, startMonth, endYear, endMonth);
+            
+            IQueryable<DailyManagementSystem.Models.Order> orderQuery = _context.Orders.Where(o => o.ClientId == clientId).AsNoTracking();
+            IQueryable<DailyManagementSystem.Models.Payment> paymentQuery = _context.Payments.Where(p => p.ClientId == clientId).AsNoTracking();
+
+            if (range.start.HasValue)
+            {
+                orderQuery = orderQuery.Where(o => o.OrderDate >= range.start.Value && o.OrderDate <= range.end!.Value);
+                paymentQuery = paymentQuery.Where(p => p.PaymentDate >= range.start.Value && p.PaymentDate <= range.end!.Value);
+            }
+
+            var orders = await orderQuery.ToListAsync();
+            var totalPaid = await paymentQuery.SumAsync(p => p.AmountReceived);
+            
+            var clientName = await _context.Clients
+                .Where(c => c.ClientId == clientId)
+                .Select(c => c.ClientName)
+                .FirstOrDefaultAsync() ?? "Unknown";
+
+            var totalOrderAmount = orders.Sum(o => o.OrderAmount);
+
+            return new ClientSpecificReportDto
+            {
+                ClientName = clientName,
+                TotalOrders = orders.Count,
+                DeliveredOrders = orders.Count(o => o.Status == "Delivered"),
+                PendingOrders = orders.Count(o => o.Status != "Delivered"),
+                TotalOrderAmount = totalOrderAmount,
+                TotalPaidAmount = totalPaid,
+                TotalPendingAmount = totalOrderAmount - totalPaid
+            };
+        }
     }
 }
