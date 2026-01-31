@@ -1,0 +1,143 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:DailyManagementSystem.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="700"
+             x:Class="DailyManagementSystem.Views.ExpenseView"
+             x:DataType="vm:ExpenseViewModel">
+
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="*,350">
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" ColumnDefinitions="Auto,*,Auto" Margin="20">
+            <StackPanel Orientation="Horizontal" Spacing="15">
+                <Button Command="{Binding BackCommand}" Content="← Back" />
+                <TextBlock Text="Expense Management" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Foreground="White"/>
+                <Border Background="#37474F" Padding="10,5" CornerRadius="5" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="Role:" Foreground="#B0BEC5" FontSize="11" VerticalAlignment="Center"/>
+                        <TextBlock Text="Admin" IsVisible="{Binding IsAdmin}" FontWeight="SemiBold" Foreground="#90CAF9" FontSize="11" VerticalAlignment="Center"/>
+                        <TextBlock Text="User" IsVisible="{Binding !IsAdmin}" FontWeight="SemiBold" Foreground="#81C784" FontSize="11" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Left: List & Summary -->
+        <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="Auto,*" Margin="20,0,10,20">
+            
+            <!-- Summary Card -->
+            <Border Grid.Row="0" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,15">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel>
+                        <TextBlock Text="Total Monthly Expense" Foreground="#EF9A9A" FontSize="12"/>
+                        <TextBlock Text="{Binding TotalMonthlyExpense, StringFormat={}{0:C}}" FontSize="24" FontWeight="Bold" Foreground="White"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- DataGrid -->
+            <Border Grid.Row="1" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Background="#1E1E1E">
+                <DataGrid ItemsSource="{Binding Expenses}" 
+                          SelectedItem="{Binding SelectedExpense}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserResizeColumns="True"
+                          GridLinesVisibility="Horizontal">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Date" Binding="{Binding SpentDate, StringFormat='{}{0:dd MMM yyyy}'}" Width="120"/>
+                        <DataGridTextColumn Header="Spent By" Binding="{Binding SpentBy}" Width="150"/>
+                        <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="150"/>
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                        <DataGridTextColumn IsVisible="{Binding $parent[UserControl].((vm:ExpenseViewModel)DataContext).IsAdmin}" Header="Amount" Binding="{Binding Amount, StringFormat='{}{0:C}'}" Width="120"/>
+                    </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu IsVisible="{Binding IsAdmin}">
+                            <MenuItem Header="Delete Expense" Command="{Binding $parent[UserControl].((vm:ExpenseViewModel)DataContext).DeleteCommand}" Foreground="Red" IsVisible="{Binding $parent[UserControl].((vm:ExpenseViewModel)DataContext).IsAdmin}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
+            </Border>
+        </Grid>
+
+        <!-- Right: Editor Form -->
+        <Border Grid.Row="1" Grid.Column="1" Margin="10,0,20,20" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="20">
+            <StackPanel Spacing="15" IsEnabled="{Binding IsFormEnabled}">
+                <TextBlock IsVisible="{Binding !IsEditing}" Text="New Expense" FontWeight="Bold" FontSize="18" Foreground="White"/>
+                <TextBlock IsVisible="{Binding IsEditing}" Text="Edit Expense" FontWeight="Bold" FontSize="18" Foreground="White"/>
+
+                <!-- Error Message -->
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap" IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                <StackPanel>
+                    <TextBlock Text="Description *" FontWeight="SemiBold" Foreground="#B0BEC5"/>
+                    <TextBox Text="{Binding Description}" Watermark="e.g. Petrol for Bike"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Spent By *" FontWeight="SemiBold" Foreground="#B0BEC5"/>
+                    <ComboBox ItemsSource="{Binding StaffNames}" 
+                              SelectedItem="{Binding SpentBy}"
+                              HorizontalAlignment="Stretch" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="Category *" FontWeight="SemiBold" Foreground="#B0BEC5" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" Command="{Binding ToggleAddCategoryCommand}" Content="+" Padding="8,2" Margin="5,0,0,0"/>
+                    </Grid>
+                    
+                    <ComboBox ItemsSource="{Binding Categories}" 
+                              SelectedItem="{Binding Category}"
+                              IsVisible="{Binding !IsAddingCategory}"
+                              HorizontalAlignment="Stretch" Margin="0,5,0,0"/>
+                    
+                    <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding IsAddingCategory}" Margin="0,5,0,0">
+                        <TextBox Text="{Binding NewCategory}" Watermark="New Category Name"/>
+                        <Button Grid.Column="1" Command="{Binding ConfirmAddCategoryCommand}" Content="OK" Margin="5,0,0,0"/>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel IsVisible="{Binding CanViewAmount}">
+                    <TextBlock Text="Amount *" FontWeight="SemiBold" Foreground="#B0BEC5"/>
+                    <TextBox Text="{Binding Amount}" Watermark="0.00"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Spent Date *" FontWeight="SemiBold" Foreground="#B0BEC5"/>
+                    <DatePicker SelectedDate="{Binding SpentDate}" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+
+                <Separator Margin="0,10" Background="#333333"/>
+
+                <StackPanel Orientation="Vertical" Spacing="10">
+                    <Button Command="{Binding SaveCommand}" 
+                            Content="Save Expense" 
+                            Classes="accent" 
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Center"/>
+                    
+                    <Button Command="{Binding DeleteCommand}" 
+                            Content="Delete" 
+                            Foreground="Red"
+                            IsVisible="{Binding IsAdmin}"
+                            IsEnabled="{Binding IsEditing}"
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Center"/>
+
+                    <Button Command="{Binding ClearCommand}" 
+                            Content="Cancel" 
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"/>
+                    
+                    <Button Command="{Binding RefreshCommand}" 
+                            Content="Refresh List" 
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+    </Grid>
+</UserControl>

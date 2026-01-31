@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DailyManagementSystem.Views.WelcomeView">
+    
+    <UserControl.Styles>
+        <Style Selector="TextBlock.title">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="48"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Effect">
+                <DropShadowEffect Color="Black" BlurRadius="20" Opacity="0.7"/>
+            </Setter>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <!-- Creative Background -->
+        <Border>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <GradientStop Color="#000000" Offset="0.0"/> <!-- Black -->
+                    <GradientStop Color="#1A237E" Offset="0.6"/> <!-- Deep Blue -->
+                    <GradientStop Color="#4A148C" Offset="1.0"/> <!-- Deep Purple -->
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <!-- Content -->
+        <StackPanel VerticalAlignment="Center" Spacing="20">
+            <TextBlock Text="Welcome to" Classes="title" FontSize="32" Opacity="0.9"/>
+            <TextBlock Text="Ram Tirath Arts" Classes="title" FontSize="64"/>
+            <TextBlock Text="Daily Management System" Foreground="#E1BEE7" HorizontalAlignment="Center" FontSize="20" FontStyle="Italic"/>
+            
+            <ProgressBar IsIndeterminate="True" Width="200" Height="4" Margin="0,40,0,0" Foreground="White" Opacity="0.6"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,45 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:DailyManagementSystem.ViewModels"
+        xmlns:views="clr-namespace:DailyManagementSystem.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="DailyManagementSystem.MainWindow"
+        Title="Daily Management System"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataTemplates>
+        <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
+            <views:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+            <views:HomeView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
+            <views:DashboardView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:WelcomeViewModel}">
+            <views:WelcomeView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ClientViewModel}">
+            <views:ClientView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:OrderViewModel}">
+            <views:OrderView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:PaymentViewModel}">
+            <views:PaymentView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ExpenseViewModel}">
+            <views:ExpenseView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ReportViewModel}">
+            <views:ReportView/>
+        </DataTemplate>
+    </Window.DataTemplates>
+
+    <Grid>
+        <ContentControl Content="{Binding CurrentView}"/>
+    </Grid>
+</Window>

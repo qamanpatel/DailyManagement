@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/DailyManagementSystem/bin/Debug/net9.0/DailyManagementSystem.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/DailyManagementSystem",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}
