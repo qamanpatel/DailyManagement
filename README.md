@@ -2,7 +2,8 @@
 
 A professional, high-performance desktop application built for businesses to streamline their daily operations, order management, and financial reporting.
 
-![App Icon](DailyManagementSystem/Resources/icon.png)
+![Uploading image.png…]()
+
 
 ## 🌟 Key Features
 
