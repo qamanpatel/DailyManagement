@@ -24,16 +24,6 @@ A professional, high-performance desktop application built for businesses to str
 - **Reports**: QuestPDF
 - **Security**: BCrypt.Net
 
-## 📸 Screenshots
-
-| Splash Screen | Login Screen |
-| :---: | :---: |
-| ![Welcome](https://via.placeholder.com/400x250?text=Welcome+Splash) | ![Login](https://via.placeholder.com/400x250?text=Login+Screen) |
-
-| Dashboard | Client Reports |
-| :---: | :---: |
-| ![Dashboard](https://via.placeholder.com/400x250?text=Dashboard+Analytics) | ![Reports](https://via.placeholder.com/400x250?text=Financial+Filtering) |
-
 ## 🚀 Getting Started
 
 ### Prerequisites
